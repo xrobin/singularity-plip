@@ -25,7 +25,7 @@ From: ubuntu:16.04
     mkdir build
     cd build
     cmake .. -DPYTHON_BINDINGS=ON 
-    make
+    make -j$(ncpus)
     make install
 
 %runscript
