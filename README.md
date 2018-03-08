@@ -12,8 +12,6 @@ It requires a recent version of Singularity on Linux.
 singularity pull --name "plip.simg" shub://xrobin/singularity-plip
 ```
 
-Note: The compilation of OpenBabel requires about 1.5 GB of memory.
-
 ## To run PLIP inside the container
 
 ```bash
@@ -38,3 +36,5 @@ git clone https://github.com/xrobin/singularity-plip.git
 cd singularity-plip
 sudo singularity build plip.simg Singularity
 ```
+
+Note: The compilation of OpenBabel requires about 1.5 GB of memory.
