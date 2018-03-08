@@ -7,7 +7,8 @@ From: ubuntu:16.04
     apt-get -y install locales
     locale-gen en_US.UTF-8
     # apt-get -y install python-future python-numpy python-lxml pymol python-openbabel git
-    apt-get -y install python-future python-numpy python-lxml pymol git
+    apt-get -y install python-future python-numpy python-lxml pymol git mdm
+    apt-get -y install libpython$(python -c 'import sys; print("%s.%s" % (sys.version_info.major, sys.version_info.minor))')
     # For OpenBabel:
     apt-get -y install cmake build-essential libxml2 libxml2-dev libeigen3-dev zlib1g-dev wget python-dev
     apt-get clean
@@ -27,6 +28,14 @@ From: ubuntu:16.04
     cmake .. -DPYTHON_BINDINGS=ON 
     make -j$(ncpus)
     make install
+    # Cleanup openbabel
+    cd ../../..
+    rm -rf openbabel
+
+    # Cleanup system
+    apt-get -y remove cmake build-essential libxml2-dev libeigen3-dev zlib1g-dev wget python-dev git mdm
+    apt-get -y autoremove
+    
 
 %runscript
 
