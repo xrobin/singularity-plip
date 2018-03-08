@@ -37,4 +37,4 @@ cd singularity-plip
 sudo singularity build plip.simg Singularity
 ```
 
-Note: The compilation of OpenBabel requires about 1.5 GB of memory.
+Note: The compilation of OpenBabel requires about 1.5 GB of memory (possibly more if running on a multi-core system).
