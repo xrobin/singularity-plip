@@ -6,17 +6,22 @@ From: ubuntu:16.04
     apt-get -y update
     apt-get -y install locales
     locale-gen en_US.UTF-8
-    # apt-get -y install python-future python-numpy python-lxml pymol python-openbabel git
-    apt-get -y install python-future python-numpy python-lxml pymol git mdm
-    apt-get -y install libpython$(python -c 'import sys; print("%s.%s" % (sys.version_info.major, sys.version_info.minor))')
-    # For OpenBabel:
-    apt-get -y install cmake build-essential libxml2 libxml2-dev libeigen3-dev zlib1g-dev wget python-dev
-    apt-get clean
 
+    # Generic build dependencies
+    apt-get -y install git mdm cmake build-essential wget
+    # PLIP dependencies
+    apt-get -y install python-future python-numpy python-lxml pymol
+    # OpenBabel dependencies:
+    apt-get -y install libxml2
+    apt-get -y install libpython$(python -c 'import sys; print("%s.%s" % (sys.version_info.major, sys.version_info.minor))')
+    # OpenBabel build dependencies
+    apt-get -y install libxml2-dev libeigen3-dev zlib1g-dev python-dev
+
+    # Install PLIP in /opt
     if [ -d /opt/pliptool ]; then rm -rf /opt/pliptool; fi
     git clone https://github.com/ssalentin/plip.git /opt/pliptool
 
-
+    # Install OpenBabel
     if [ -d openbabel ]; then rm -rf openbabel; fi
     mkdir openbabel
     cd openbabel
@@ -28,47 +33,22 @@ From: ubuntu:16.04
     cmake .. -DPYTHON_BINDINGS=ON 
     make -j$(ncpus)
     make install
-    # Cleanup openbabel
+
+    # Cleanup OpenBabel
     cd ../../..
     rm -rf openbabel
 
-    # Cleanup system
-    apt-get -y remove cmake build-essential libxml2-dev libeigen3-dev zlib1g-dev wget python-dev git mdm
+    # Cleanup system build deps
+    apt-get -y remove git mdm cmake build-essential wget
+    # Cleanup OpenBabel build deps
+    apt-get -y remove libxml2-dev libeigen3-dev zlib1g-dev python-dev
+    # Cleanup apt 
     apt-get -y autoremove
-    
+    apt-get clean
 
 %runscript
 
    exec /opt/pliptool/plip/plipcmd "$@"
 
-   #"I can put here whatever I want to happen by default when the user runs the container"
-   #cat << EOF
-#This container includes the following apps:
-#PyMOL 1.7.2.1 - https://pymol.org
-#      --app PyMOL or --app pymol ...
-#OpenBabel 2.3.2 - http://openbabel.org
-#      -- app OpenBabel or --app obabel ...
-#PLIP 1.4.0 (git) - https://github.com/ssalentin/plip
-#      -- app PLIP or --app plip
-#EOF
-
 %environment
     export PYTHONPATH=/opt/pliptool/plip
-
-#%apprun plip
-#	exec /opt/pliptool/plip/plipcmd "$@"
-
-#%apprun PLIP
-#	exec ~/pliptool/plip/plipcmd "$@"
-
-#%apprun openbabel
-#	exec /usr/bin/obabel "$@"
-
-#%apprun OpenBabel
-#	exec /usr/bin/obabel "$@"
-
-#%apprun pymol
-#	exec /usr/bin/pymol "$@"
-
-#%apprun PyMOL
-#	exec /usr/bin/pymol "$@"
