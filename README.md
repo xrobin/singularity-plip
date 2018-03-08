@@ -25,7 +25,10 @@ Note: The compilation of OpenBabel requires about 1.5 GB of memory.
 
 ```bash
 singularity run shub://xrobin/singularity-plip
+# Or:
 singularity run xrobin-singularity-plip-master.simg
+# Or:
+./xrobin-singularity-plip-master.simg
 ```
 
 ### You can rename the file for easier use
@@ -36,8 +39,6 @@ singularity run plip.simg --help
 ```
 
 ### Or use the shorter syntax:
-
-This 
 
 ```bash
 ./plip.simg --help
